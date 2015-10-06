@@ -1,0 +1,639 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0036)https://bucardo.org/wiki/Tail_n_mail -->
+<html xmlns="" xml:lang="en" lang="en" dir="ltr"><script id="tinyhippos-injected">if (window.top.ripple) { window.top.ripple("bootstrap").inject(window, document); }</script><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+				<title>Tail n mail - Bucardo</title>
+		<style type="text/css" media="screen, projection">/*<![CDATA[*/
+			@import "/bucardowiki/skins/common/shared.css?303";
+			@import "/bucardowiki/skins/BucardoGreen/main-glossy.css?303";
+		/*]]>*/</style>
+		<link rel="stylesheet" type="text/css" media="print" href="./README_files/Tail_n_mail">
+		<!--[if lt IE 7]><meta http-equiv="imagetoolbar" content="no" /><![endif]-->
+		
+		<script>if(window.mw){
+mw.config.set({"wgCanonicalNamespace":"","wgCanonicalSpecialPageName":false,"wgNamespaceNumber":0,"wgPageName":"Tail_n_mail","wgTitle":"Tail n mail","wgCurRevisionId":848,"wgRevisionId":848,"wgArticleId":108,"wgIsArticle":true,"wgIsRedirect":false,"wgAction":"view","wgUserName":null,"wgUserGroups":["*"],"wgCategories":[],"wgBreakFrames":false,"wgPageContentLanguage":"en","wgPageContentModel":"wikitext","wgSeparatorTransformTable":["",""],"wgDigitTransformTable":["",""],"wgDefaultDateFormat":"dmy","wgMonthNames":["","January","February","March","April","May","June","July","August","September","October","November","December"],"wgMonthNamesShort":["","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"wgRelevantPageName":"Tail_n_mail","wgIsProbablyEditable":false,"wgRestrictionEdit":[],"wgRestrictionMove":[],"wgWikiEditorEnabledModules":{"toolbar":false,"dialogs":false,"hidesig":true,"preview":false,"previewDialog":false,"publish":false}});
+}</script>
+		<script type="text/javascript" src="./README_files/wikibits.js"><!-- wikibits js --></script>
+		<!-- Head Scripts -->
+	</head>
+<body class="mediawiki  ltr ">
+	<div id="globalWrapper">
+		<div id="column-content">
+	<div id="content">
+		<a name="top" id="top"></a>
+				<h1 class="firstHeading">Tail n mail</h1>
+		<div id="bodyContent">
+			<h3 id="siteSub">From Bucardo</h3>
+			<div id="contentSub"></div>
+									<div id="jump-to-nav">Jump to: <a href="https://bucardo.org/wiki/Tail_n_mail#column-one">navigation</a>, <a href="https://bucardo.org/wiki/Tail_n_mail#searchInput">search</a></div>			<!-- start content -->
+			<div id="mw-content-text" lang="en" dir="ltr" class="mw-content-ltr"><p><b>tail_n_mail</b> (sometimes abbreviated TNM or tnm) is a Perl script for automatically detecting interesting items that appear in log files and mailing them out to interested parties. It is primarily aimed at <a href="https://bucardo.org/bucardowiki/index.php?title=Postgres&action=edit&redlink=1" class="new" title="Postgres (page does not exist)">Postgres</a> log files but can be used for any files. It was developed at End Point Corporation by Greg Sabino Mullane.
+</p>
+<div id="toc" class="toc"><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1 tocsection-1"><a href="https://bucardo.org/wiki/Tail_n_mail#Download"><span class="tocnumber">1</span> <span class="toctext">Download</span></a></li>
+<li class="toclevel-1 tocsection-2"><a href="https://bucardo.org/wiki/Tail_n_mail#Basic_Usage"><span class="tocnumber">2</span> <span class="toctext">Basic Usage</span></a></li>
+<li class="toclevel-1 tocsection-3"><a href="https://bucardo.org/wiki/Tail_n_mail#Sample_Output"><span class="tocnumber">3</span> <span class="toctext">Sample Output</span></a></li>
+<li class="toclevel-1 tocsection-4"><a href="https://bucardo.org/wiki/Tail_n_mail#How_It_Works"><span class="tocnumber">4</span> <span class="toctext">How It Works</span></a></li>
+<li class="toclevel-1 tocsection-5"><a href="https://bucardo.org/wiki/Tail_n_mail#Requirements"><span class="tocnumber">5</span> <span class="toctext">Requirements</span></a></li>
+<li class="toclevel-1 tocsection-6"><a href="https://bucardo.org/wiki/Tail_n_mail#Command_Line_Options"><span class="tocnumber">6</span> <span class="toctext">Command Line Options</span></a>
+<ul>
+<li class="toclevel-2 tocsection-7"><a href="https://bucardo.org/wiki/Tail_n_mail#Basic_options:"><span class="tocnumber">6.1</span> <span class="toctext">Basic options:</span></a></li>
+<li class="toclevel-2 tocsection-8"><a href="https://bucardo.org/wiki/Tail_n_mail#Debugging_options:"><span class="tocnumber">6.2</span> <span class="toctext">Debugging options:</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-9"><a href="https://bucardo.org/wiki/Tail_n_mail#Alternate_modes"><span class="tocnumber">7</span> <span class="toctext">Alternate modes</span></a>
+<ul>
+<li class="toclevel-2 tocsection-10"><a href="https://bucardo.org/wiki/Tail_n_mail#Duration_mode"><span class="tocnumber">7.1</span> <span class="toctext">Duration mode</span></a></li>
+<li class="toclevel-2 tocsection-11"><a href="https://bucardo.org/wiki/Tail_n_mail#Tempfile_mode"><span class="tocnumber">7.2</span> <span class="toctext">Tempfile mode</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-12"><a href="https://bucardo.org/wiki/Tail_n_mail#Config_File_Format"><span class="tocnumber">8</span> <span class="toctext">Config File Format</span></a></li>
+<li class="toclevel-1 tocsection-13"><a href="https://bucardo.org/wiki/Tail_n_mail#Config_File_Example"><span class="tocnumber">9</span> <span class="toctext">Config File Example</span></a></li>
+<li class="toclevel-1 tocsection-14"><a href="https://bucardo.org/wiki/Tail_n_mail#Temporarily_Disabling"><span class="tocnumber">10</span> <span class="toctext">Temporarily Disabling</span></a></li>
+<li class="toclevel-1 tocsection-15"><a href="https://bucardo.org/wiki/Tail_n_mail#Mailing_Lists"><span class="tocnumber">11</span> <span class="toctext">Mailing Lists</span></a></li>
+<li class="toclevel-1 tocsection-16"><a href="https://bucardo.org/wiki/Tail_n_mail#Bugs_and_Feature_Requests"><span class="tocnumber">12</span> <span class="toctext">Bugs and Feature Requests</span></a></li>
+<li class="toclevel-1 tocsection-17"><a href="https://bucardo.org/wiki/Tail_n_mail#Development"><span class="tocnumber">13</span> <span class="toctext">Development</span></a></li>
+</ul>
+</div>
+
+<h3><span class="mw-headline" id="Download">Download</span></h3>
+<p>The latest version, 1.27.0, can be downloaded here:
+</p>
+<ul>
+<li> <a rel="nofollow" class="external text" href="http://bucardo.org/downloads/tail_n_mail">tail_n_mail</a>
+</li>
+<li> <a rel="nofollow" class="external text" href="http://bucardo.org/downloads/tail_n_mail.asc">tail_n_mail.asc</a>
+</li>
+</ul>
+<h3><span class="mw-headline" id="Basic_Usage">Basic Usage</span></h3>
+<p>To use this script, simply run and provide it with the name of a config file as the first argument. A sample config file can be generated by running:
+</p>
+<pre> tail tail_n_mail &gt; tnm.config.txt
+</pre>
+<p>Edit this file so that it points to your particular logfile and change the email address, then test it out by running:
+</p>
+<pre> perl tail_n_mail tnm.config.txt
+</pre>
+<p>Once it is working properly, have it run periodically by adding an entry to your crontab.
+</p><p>If running against a Postgres log file (the default), you should add your log_line_prefix value to a file named <strong>.tailnmailrc</strong> in your home directory. The file will look something like this:
+</p>
+<pre> log_line_prefix='%t [%p]&nbsp;%u@%d '
+</pre>
+<p>Most options below can be put in this file as well. If you are using syslog for your Postgres logs, add this to your .tailnmailrc file:
+</p>
+<pre> pgmode: syslog
+</pre>
+<h3><span class="mw-headline" id="Sample_Output">Sample Output</span></h3>
+<p>View a <a href="https://bucardo.org/wiki/Tail_n_Mail/Example_output" title="Tail n Mail/Example output">sample output email</a>
+</p>
+<h3><span class="mw-headline" id="How_It_Works">How It Works</span></h3>
+<p>When tail_n_mail is run, it first finds which log file or log files to look at. Then it travels to the point in the file (if any) that it left off of last time, generates a list of all files that were created from the last time it was run until the latest file, and extracts all the lines of interest by applying inclusion and exclusion rules. Finally, it generates an email message which is then sent to the addresses in the EMAIL line of the config file. The config file is rewritten so that it knows where to start looking the next time it is run.
+</p>
+<h3><span class="mw-headline" id="Requirements">Requirements</span></h3>
+<p>TNM is meant to have minimum requirements. Perl must be version 5.8.3 or better. If you are sending mail in <tt>sendmail</tt> mode, you must have a sendmail executable available that can accept the <tt>-f</tt> option. If you are using SMTP mode, you must have the Net::SMTP::SSL module available. On Linux and similar systems, you can install the modules for SMTP support by installing these packages (via yum or other method):
+</p>
+<ul>
+<li> perl-Net-SMTP-SSL
+</li>
+<li> perl-Authen-SASL
+</li>
+</ul>
+<p>On Windows, you will need to install the following items via ppm install:
+</p>
+<ul>
+<li> Net_SSLeay.ppd                                                                                              
+</li>
+<li> IO-Socket-SSL.ppd                                                                                           
+</li>
+<li> Authen-SASL.ppd                                                                                             
+</li>
+<li> Net-SMTP-SSL.ppd
+</li>
+</ul>
+<h3><span class="mw-headline" id="Command_Line_Options">Command Line Options</span></h3>
+<p>There is only one mandatory command line option, and that is the name of a config file. All other options start with a "double dash".
+</p>
+<h4><span class="mw-headline" id="Basic_options:">Basic options:</span></h4>
+<ul>
+<li> --version
+<ul>
+<li> Returns the version number and exits
+</li>
+</ul>
+</li>
+<li> --verbose
+<ul>
+<li> Increases the level of verbosity
+</li>
+</ul>
+</li>
+<li> --quiet
+<ul>
+<li> Turns off minor warnings, e.g. the log file not existing
+</li>
+</ul>
+</li>
+<li> --help
+<ul>
+<li> Shows a sample usage line and exits
+</li>
+</ul>
+</li>
+<li> --reset
+<ul>
+<li> Resets the file size stored in the config file to the current file size. This has the effect of marking the log file as "up to date" so that the next run will only contain entries that occurred after running tail_n_mail with the --reset option. Note that this option rewrites the config file even if --dryrun is used.
+</li>
+</ul>
+</li>
+<li> --duration=XXX
+<ul>
+<li> If running in duration mode, specified the minimum number of milliseconds a query has run before it is reported. It is usually better to put this into the config file with the DURATION: option.
+</li>
+</ul>
+</li>
+<li> --duration_limit=XXX
+<ul>
+<li> If running in duration mode, limits the number of matching entries that will be displayed.
+</li>
+</ul>
+</li>
+<li> --tempfile_limit=XXX
+<ul>
+<li> If running in tempfile mode, limits the number of matching entries that will be displayed.
+</li>
+</ul>
+</li>
+<li> --flatten
+<ul>
+<li> Attempt to normalize similar queries by replacing things such as "<tt>VALUES (123, 'abc')</tt>" with "<tt>VALUES (?,?)</tt>". This is on by default, so use --noflatten to turn it off
+</li>
+</ul>
+</li>
+<li> --sqlstate
+<ul>
+<li> Off by default. If enabled, this will strip out the SQLSTATE codes that appear after the ERROR and FATAL lines for purposes of regex matching. Handy when you are toggling log_error_verbosity.
+</li>
+</ul>
+</li>
+<li> --pgmode
+<ul>
+<li> On by default, this indicates that the log files are coming from Postgres. In other words, if you are not analyzing Postgres log files, it's best to use <tt>--pgmode=0</tt>
+</li>
+</ul>
+</li>
+<li> --sortby
+<ul>
+<li> How the final output will be sorted. Must be one of 'count' or 'date'. Count is the default (the most commonly occurring errors appear at the top of the report)
+</li>
+</ul>
+</li>
+<li> --mailmode=XXX
+<ul>
+<li> How to send the email: can be either <tt>sendmail</tt> or authenticated <tt>smtp</tt>. Defaults to <tt>sendmail</tt>.
+</li>
+</ul>
+</li>
+<li> --mailcom=XXX
+<ul>
+<li> When using the sendmail mode, the command to use. Defaults to <tt>/usr/sbin/sendmail</tt>.
+</li>
+</ul>
+</li>
+<li> --mailserver=XXX
+<ul>
+<li> The mail server to connect to when using SMTP mode.
+</li>
+</ul>
+</li>
+<li> --mailuser=XXX
+<ul>
+<li> The mail username when using SMTP mode.
+</li>
+</ul>
+</li>
+<li> --mailpass=XXX
+<ul>
+<li> The mail password when using SMTP mode.
+</li>
+</ul>
+</li>
+<li> --mailport=###
+<ul>
+<li> The port to use when using SMTP mode. Defaults to 465.
+</li>
+</ul>
+</li>
+<li> --mailzero
+<ul>
+<li> If set, then mail is sent even if no items were found.
+</li>
+</ul>
+</li>
+<li> --mailsig=file
+<ul>
+<li> Add the contents of a file to the end of messages that are mailed out. Can have more than one file.
+</li>
+</ul>
+</li>
+<li> --maxemailsize
+<ul>
+<li> The size in bytes before email is broken into separate messages. Defaults to 10 million.
+</li>
+</ul>
+</li>
+<li> --tsep
+<ul>
+<li> Sets the thousands separator for formatting long numbers. This is usually determined automatically based on your locale, so setting this should not be necessary. You can turn off the formatting of long numbers by setting this to <b>0</b>
+</li>
+</ul>
+</li>
+<li> --tsepnosub
+<ul>
+<li> Prevents formatting of long numbers inside the subject line. This is a workaround for a Mailman bug.
+</li>
+</ul>
+</li>
+<li> --skip_non_parsed
+<ul>
+<li> If true, prevents unrecognizable log lines from being added to the report. Defaults to false.
+</li>
+</ul>
+</li>
+</ul>
+<h4><span class="mw-headline" id="Debugging_options:">Debugging options:</span></h4>
+<ul>
+<li> --dryrun
+<ul>
+<li> Does everything except send email and rewrite the config file. The contents of the mail message are sent to stdout.
+</li>
+</ul>
+</li>
+<li> --nomail
+<ul>
+<li> Prevents the sending of email, and outputs the command it would have used.
+</li>
+</ul>
+</li>
+<li> --debug
+<ul>
+<li> Greatly increases the level of verbosity
+</li>
+</ul>
+</li>
+<li> --file=XXX
+<ul>
+<li> Use the specified file rather than determining the log file from the config file.
+</li>
+</ul>
+</li>
+<li> --offset=XXX
+<ul>
+<li> Specifies the exact byte position to start at in the log file. Used for debugging.
+</li>
+</ul>
+</li>
+<li> --rewind=XXX
+<ul>
+<li> Seeks backwards in the log file by the given number of bytes before processing it. Used for debugging.
+</li>
+</ul>
+</li>
+<li> --timewarp=XXX
+<ul>
+<li> Adjust the time by a number of seconds. Used for debugging time-based logfiles with POSIX escapes.
+</li>
+</ul>
+</li>
+<li> --showonly=XXX
+<ul>
+<li> Only output the top XXX items.
+</li>
+</ul>
+</li>
+<li> --hideflatten
+<ul>
+<li> By default, we only show the 'flattened' version of a statement if there is more than one found. You can change this to always show the flattened and actual for every statement by using --nohideflatten. Mostly useful for debugging.
+</li>
+</ul>
+</li>
+</ul>
+<h3><span class="mw-headline" id="Alternate_modes">Alternate modes</span></h3>
+<p>Normally, tail_n_mail simply reads in and reports on all matching lines. However, two special modes are available: duration and tempfile. Both can be enabled by adding the string 'duration' or 'tempfile' to your config file. For example, a config file named 'tnm.config.tempfile.txt' would automatically switch tnm to tempfile mode. Both modes have a limit option (--duration_limit=N and --tempfile_limit=N) to show only the top N matches.
+</p>
+<h4><span class="mw-headline" id="Duration_mode">Duration mode</span></h4>
+<p>In duration mode, queries are sorted from longest to shortest duration, or time to run. So, using a --duration_limit=10 option would show you the top ten slowest queries.
+</p>
+<h4><span class="mw-headline" id="Tempfile_mode">Tempfile mode</span></h4>
+<p>When Postgres needs more memory than what is available, it creates temporary files on disk. If the log_temp_files is on (set to something other than -1), the size of each file created on disk is logged. In tempfile mode, queries that create on-disk temporary files are sorted from largest to smallest. In addition, the arithmetic mean for each query, as well as the total memory used, is computed and reported as well.
+</p>
+<h3><span class="mw-headline" id="Config_File_Format">Config File Format</span></h3>
+<p>Note: the config file is rewritten by tail_n_mail each time it is run, so items inside of it may get reordered and reformatted. However, the basic information will stay the same. Blank lines and lines starting with a hash (<b>#</b>) are ignored. All other items are of the format <b>NAME: value</b> where NAME is always a single uppercase word. The items are:
+</p>
+<ul>
+<li> EMAIL:
+<ul>
+<li> (mandatory) This item consists of one or more email addresses, comma-separated
+</li>
+</ul>
+</li>
+<li> FILE:
+<ul>
+<li> (mandatory) This is the name of the file(s) to be scanned. More than one FILE can be added. In addition to an absolute file name, the following formats are supported:
+<ul>
+<li> POSIX escape syntax, for example: <b>FILE: /var/log/pg_log/postgresql-%Y-%m-%d.log</b>
+</li>
+<li> The special word <b>LATEST</b>. which will cause the program to use the file in that directory that was most recently changed. For example: <b>FILE: /var/lib/postgresql/8.4/main/pg_log/LATEST</b>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li> INHERIT:
+<ul>
+<li> A file that has configuration parameters inside of it. This allows you to use a single file containing a centralized list of strings to include and exclude, for example, and have many configuration files point to it. The inherit file can contain most of the parameters that a config file can, with the exception of FILE, OFFSET, and LASTFILE.
+</li>
+</ul>
+</li>
+<li> INCLUDE:
+<ul>
+<li> A regular expression indicating which lines match for possible mailing out. More than one INCLUDE item line can be used.
+</li>
+</ul>
+</li>
+<li> EXCLUDE:
+<ul>
+<li> A regular expression indicating which lines to exclude. This is applied after the INCLUDE rules above. More than one EXCLUDE item line can be used.
+</li>
+</ul>
+</li>
+<li> EXCLUDE_PREFIX:
+<ul>
+<li> A regular expression which indicates which lines to exclude by looking at the prefix of the line, rather than the content. The prefix typically contains things such as the timestamp and PID.
+</li>
+</ul>
+</li>
+<li> EXCLUDE_NON_PARSED:
+<ul>
+<li> A regular expression indicating which non-parsed lines to be skipped (non-parsed indicating those that do not match the log_line_prefix, such as notices directly from the OS - one example is rsync errors inside of an archive_command call)
+</li>
+</ul>
+</li>
+<li> MAILSUBJECT:
+<ul>
+<li> The subject line for the email to be sent. Special uppercase words can be used that will be replaced each time:
+<ul>
+<li> HOST - replaced with the current hostname
+</li>
+<li> FILE - replaced with the current log file name
+</li>
+<li> NUMBER - the total number of matches
+</li>
+<li> UNIQUE - number of unique matches
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li> FIND_LINE_NUMBER:
+<ul>
+<li> Indicates whether an effort is made to report the line number that each line of interest appears at. Valid values are <b>1</b> and <b>0</b>, and this item is on by default. Counting line numbers can be expensive for very large log files, so this item should be turned off if tail_n_mail is running very often (e.g. once a minute) and the line number is not important.
+</li>
+</ul>
+</li>
+<li> OFFSET:
+<ul>
+<li> How many bytes to skip in the current log file before beginning to scan. This is set automatically by the program and should not be changed manually.
+</li>
+</ul>
+</li>
+<li> LASTFILE:
+<ul>
+<li> The name of the last file to be checked. Used in case the file has rotated to another one since the last time tail_n_mail was run. Set automatically, and should not be changed manually.
+</li>
+</ul>
+</li>
+<li> MAXSIZE:
+<ul>
+<li> The maximum number of bytes in the file to check. This is set to 80 million bytes by default.
+</li>
+</ul>
+</li>
+<li> TYPE:
+<ul>
+<li> What type of file this is. Currently, the only two choices are:
+<ul>
+<li> normal: the default, no special processing
+</li>
+<li> duration: the duration times are extracted from the log file, allowing the DURATION item of --duration command line flag to be used. This mode is automatically chosen if the name of the config file contains the string 'duration'.
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li> DURATION:
+<ul>
+<li> The minimum number of milliseconds a query is run before it will be reported. Only works when the mode is set to 'duration'.
+</li>
+</ul>
+</li>
+<li> PGFORMAT:
+<ul>
+<li> Indicates the format of the log file, so that the date can be extracted from each line. The value should be a single number, and defaults to choice "1" below. Each number corresponds to a regular expression as follows:
+<ul>
+<li> 1: (.+?\[\d+\]): \[\d+\-\d+\]
+</li>
+<li> 2: (.+?\d\d:\d\d:\d\d \w\w\w)
+</li>
+<li> 3: (.+?\d\d:\d\d:\d\d \w\w\w)
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li> MAILZERO:
+<ul>
+<li> Indicated whether to send mail even if no matches were found. As it is off by default, the only sensible option at the moment is MAILZERO=1
+</li>
+</ul>
+</li>
+<li> MAILSIG:
+<ul>
+<li> A file whose contents will be appended to the end of mail messages. More than one MAILSIG can be given: each file will be appended in order.
+</li>
+</ul>
+</li>
+<li> TSEP:
+<ul>
+<li> The thousands separator: see discussion in the basic options section.
+</li>
+</ul>
+</li>
+<li> LOG_LINE_PREFIX:
+<ul>
+<li> The current log_line_prefix setting
+</li>
+</ul>
+</li>
+</ul>
+<h3><span class="mw-headline" id="Config_File_Example">Config File Example</span></h3>
+<p>Here is a complete sample config file that grabs all "fatal" errors from today's Postgres log, while excluding any errors caused by trying to connect to a non-existent database:
+</p>
+<pre> ## Config file for the tail_n_mail program
+ ## This file is automatically updated
+ EMAIL: greg@endpoint.com
+ MAILSUBJECT: HOST Postgres fatal errors (FILE)
+ 
+ FILE: /var/log/postgresql-%Y-%m-%d.log
+ INCLUDE: FATAL:  
+ EXCLUDE: database ".+" does not exist
+</pre>
+<p>Note that there are two spaces after the final colon in the INCLUDE line. This regex might pick up some false positives, but it's good enough for everyday use. If the name of the file above was "tnm.config.fatals.txt", it could be run every five minutes by adding the following line to your crontab:
+</p>
+<pre> */5 * * * * perl tail_n_mail tnm.config.fatals.txt
+</pre>
+<h3><span class="mw-headline" id="Temporarily_Disabling">Temporarily Disabling</span></h3>
+<p>If you need to temporarily disable tail_n_mail from running (for example, during a Postgres upgrade), you an add the following line to the tailnmailrc file:
+</p>
+<pre> disable=1
+</pre>
+<h3><span class="mw-headline" id="Mailing_Lists">Mailing Lists</span></h3>
+<p>There are three mailing lists related to tail_n_mail:
+</p>
+<ul>
+<li> <a rel="nofollow" class="external text" href="https://mail.endcrypt.com/mailman/listinfo/tnm">TNM</a> - General information and discussion
+</li>
+<li> <a rel="nofollow" class="external text" href="https://mail.endcrypt.com/mailman/listinfo/tnm-announce">TNM-announce</a> - Low volume announcement list
+</li>
+<li> <a rel="nofollow" class="external text" href="https://mail.endcrypt.com/mailman/listinfo/tnm-commit">TNM-commit</a> - All commits to the project are mailed here
+</li>
+</ul>
+<h3><span class="mw-headline" id="Bugs_and_Feature_Requests">Bugs and Feature Requests</span></h3>
+<p>Bugs should be reported through <a rel="nofollow" class="external text" href="http://bucardo.org/bugzilla">the bugzilla bug tracking site</a>. Feature requests are welcome there as well, or send us an email.
+</p>
+<h3><span class="mw-headline" id="Development">Development</span></h3>
+<p>Everyone is encouraged to look over and make improvements to the code. The latest development version can be obtained by running:
+</p>
+<pre> git clone <a rel="nofollow" class="external free" href="git://bucardo.org/tail_n_mail.git">git://bucardo.org/tail_n_mail.git</a>
+</pre>
+<p>There is also a <a rel="nofollow" class="external text" href="http://github.com/bucardo">GitHub mirror</a> for easy patch contribution by the general public.
+</p>
+<!-- 
+NewPP limit report
+CPU time usage: 0.029 seconds
+Real time usage: 0.031 seconds
+Preprocessor visited node count: 67/1000000
+Preprocessor generated node count: 72/1000000
+Post‐expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Highest expansion depth: 2/40
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key bucardo_wiki:pcache:idhash:108-0!*!0!!en!*!* and timestamp 20151006180734 and revision id 848
+ -->
+</div><div class="printfooter">
+Retrieved from "<a href="http://bucardo.org/bucardowiki/index.php?title=Tail_n_mail&oldid=848">http://bucardo.org/bucardowiki/index.php?title=Tail_n_mail&amp;oldid=848</a>"</div>
+			<div id="catlinks" class="catlinks catlinks-allhidden"></div>			<!-- end content -->
+			<div class="visualClear"></div>
+		</div>
+	</div>
+		</div>
+		<div id="column-one">
+	<div id="p-cactions" class="portlet">
+		<h5>Views</h5>
+		<div class="pBody">
+			<ul>
+	
+				 <li id="ca-nstab-main" class="selected"><a href="./README_files/README.html" array="">Page</a></li>
+				 <li id="ca-talk" class="new"><a href="https://bucardo.org/bucardowiki/index.php?title=Talk:Tail_n_mail&action=edit&redlink=1" array="">Discussion</a></li>
+				 <li id="ca-viewsource"><a href="https://bucardo.org/bucardowiki/index.php?title=Tail_n_mail&action=edit" array="">View source</a></li>
+				 <li id="ca-history"><a href="https://bucardo.org/bucardowiki/index.php?title=Tail_n_mail&action=history" array="">History</a></li>			</ul>
+		</div>
+	</div>
+	<div class="portlet" id="p-personal">
+		<h5>Personal tools</h5>
+		<div class="pBody">
+			<ul>
+				<li id="pt-login"><a href="https://bucardo.org/bucardowiki/index.php?title=Special:UserLogin&returnto=Tail+n+mail" array="">Log in</a></li>
+			</ul>
+		</div>
+	</div>
+	<div class="portlet" id="p-logo">
+	<h2><a href="https://bucardo.org/wiki/Main_Page" array="">bucardo.org</a></h2>
+	<!-- 
+		<h2><a href="/wiki/Main_Page"Array>Bucardo</a></h2>
+	--> 
+	</div>
+	<script type="text/javascript"> if (window.isMSIE55) fixalpha(); </script>
+	<div class="generated-sidebar portlet" id="p-navigation">
+		<h5>Navigation</h5>
+		<div class="pBody">
+			<ul>
+				<li id="n-mainpage-description"><a href="https://bucardo.org/wiki/Main_Page" array="">Main page</a></li>
+				<li id="n-recentchanges"><a href="https://bucardo.org/wiki/Special:RecentChanges" array="">Recent changes</a></li>
+				<li id="n-randompage"><a href="https://bucardo.org/wiki/Special:Random" array="">Random page</a></li>
+				<li id="n-help"><a href="https://www.mediawiki.org/wiki/Special:MyLanguage/Help:Contents" array="">Help</a></li>
+			</ul>
+		</div>
+	</div>
+	<div id="p-search" class="portlet">
+		<h5><label for="searchInput">Search</label></h5>
+		<div id="searchBody" class="pBody">
+			<form action="https://bucardo.org/wiki/Special:Search" id="searchform"><div>
+				<input id="searchInput" name="search" type="text" array="" value="">
+				<input type="submit" name="go" class="searchButton" id="searchGoButton" value="Go" array="">&nbsp;
+				<input type="submit" name="fulltext" class="searchButton" id="mw-searchButton" value="Search" array="">
+			</div></form>
+		</div>
+	</div>
+	<div class="portlet" id="p-tb">
+		<h5>Tools</h5>
+		<div class="pBody">
+			<ul>
+				<li id="t-whatlinkshere"><a href="https://bucardo.org/wiki/Special:WhatLinksHere/Tail_n_mail" array="">What links here</a></li>
+				<li id="t-recentchangeslinked"><a href="https://bucardo.org/wiki/Special:RecentChangesLinked/Tail_n_mail" array="">Related changes</a></li>
+<li id="t-specialpages"><a href="https://bucardo.org/wiki/Special:SpecialPages" array="">Special pages</a></li>
+				<li id="t-print"><a href="https://bucardo.org/bucardowiki/index.php?title=Tail_n_mail&printable=yes" array="">Printable version</a></li>				<li id="t-permalink"><a href="https://bucardo.org/bucardowiki/index.php?title=Tail_n_mail&oldid=848" array="">Permanent link</a></li>			</ul>
+		</div>
+	</div>
+		</div><!-- end of the left (by default at least) column -->
+			<div class="visualClear"></div>
+			<div id="footer">
+				<div id="f-poweredbyico"><a href="https://www.mediawiki.org/"><img src="./README_files/poweredby_mediawiki_88x31.png" height="31" width="88" alt="Powered by MediaWiki"></a></div>
+			<ul id="f-list">
+				<li id="lastmod"> This page was last modified on 18 April 2014, at 18:10.</li>
+				<li id="viewcount">This page has been accessed 107,301 times.</li>
+				<li id="privacy"><a href="https://bucardo.org/wiki/Bucardo:Privacy_policy" title="Bucardo:Privacy policy">Privacy policy</a></li>
+				<li id="about"><a href="https://bucardo.org/wiki/Bucardo:About" title="Bucardo:About">About Bucardo</a></li>
+				<li id="disclaimer"><a href="https://bucardo.org/wiki/Bucardo:General_disclaimer" title="Bucardo:General disclaimer">Disclaimers</a></li>
+			</ul>
+		</div>
+</div>
+<script>/*<![CDATA[*/window.jQuery && jQuery.ready();/*]]>*/</script><script>if(window.mw){
+mw.loader.state({"site":"ready","user":"ready","user.groups":"ready"});
+}</script>
+<script>if(window.mw){
+mw.loader.load(["mediawiki.action.view.postEdit","mediawiki.user","mediawiki.hidpi","mediawiki.page.ready","mediawiki.searchSuggest"],null,true);
+}</script>
+
+<script type="text/javascript" src="./README_files/yahoo-dom-event.js"></script>
+<script type="text/javascript" src="./README_files/balloon.config.js"></script>
+<script type="text/javascript" src="./README_files/balloon.js"></script>
+<script type="text/javascript">
+var balloon = new Balloon;
+BalloonConfig(balloon);
+balloon.images   = '/bucardowiki/extensions/balloons/images';
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script><script src="./README_files/ga.js" type="text/javascript"></script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-525312-12");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+<script>if(window.mw){
+mw.config.set({"wgBackendResponseTime":135});
+}</script>
+</body></html>
