@@ -16,6 +16,7 @@
 ## Run: perl tail_n_mail tail_n_mail.config
 ## Once working, put the above into a cron job
 
+use 5.10.1;
 use strict;
 use warnings;
 use Data::Dumper   qw( Dumper              );
@@ -23,7 +24,6 @@ use Getopt::Long   qw( GetOptions          );
 use File::Temp     qw( tempfile            );
 use File::Basename qw( dirname             );
 use POSIX          qw( strftime localeconv );
-use 5.008003;
 
 our $VERSION = '1.27.0';
 
@@ -378,7 +378,7 @@ my $fileinfo = $opt{file}[$filenumber];
 
     ## Generate the next log file to parse
     my $logfile = pick_log_file($fileinfo);
-
+    
     ## If undefined or same as last time, we are done with this file
     if (! defined $logfile or $logfile eq $last_logfile) {
         ## Grab the next extry
@@ -392,7 +392,6 @@ my $fileinfo = $opt{file}[$filenumber];
     $arg{debug} and warn " Parsing file: $logfile\n";
 
     my $count = parse_file($logfile, $fileinfo);
-
     if ($count >= 0) {
         push @files_parsed => [$logfile, $count];
         $fileorder{$logfile} = ++$filenum;
@@ -1136,7 +1135,7 @@ sub parse_file {
 
     ## The file we scanned last time we ran
     my $lastfile = $fileinfo->{lastfile} || '';
-
+    
     ## Set this as the latest (but not the lastfile)
     $fileinfo->{latest} = $filename;
 
@@ -1264,7 +1263,7 @@ sub parse_file {
 
     ## Get exclusion and inclusion regexes for this file
     ($exclude,$include,$exclude_prefix,$exclude_non_parsed) = generate_regexes($filename);
-
+    
     ## Discard the previous line if needed (we rewound by 10 characters above)
     $original_offset and <$fh>;
 
@@ -1310,7 +1309,17 @@ sub parse_file {
         my $lastline = '';
         my $syslognum = 0; ## used by syslog only
         my $bailout = 0; ## emergency bail out in case we end up sleep seeking
+# DEBUG!
+	  	my $processed = 1;
+		my $prev_line = '';
+		
       LOGLINE: while (<$fh>) {
+# DEBUG!
+			if(! $processed ) {
+				$count += process_line($prev_line, $. + $newlines, $filename);
+			}
+			$processed = 0;			
+			$prev_line = $_;
 
             ## We ran into a truncated line last time, so we are most likely done
             last if $bailout;
@@ -1353,7 +1362,9 @@ sub parse_file {
                         if ($arg{pglog} eq 'syslog') {
                             if ($syslognum and $syslognum != $pgnum) {
                                 ## Got a new statement, so process the old
+# DEBUG!
                                 $count += process_line(delete $pidline{$pgpid}, 0, $filename);
+								$processed++;
                             }
                         }
                         else {
@@ -1365,7 +1376,9 @@ sub parse_file {
                             else {
                                 ## Process the old one
                                 ## Delete it so it gets recreated afresh below
+# DEBUG!
                                 $count += process_line(delete $pidline{$pgpid}, 0, $filename);
+								$processed++;
                             }
                         }
                     }
@@ -1432,7 +1445,9 @@ sub parse_file {
                     ## Not a continuation, so probably an error from the OS
                     ## Simply parse it right away, force it to match
                     if (! $arg{skip_non_parsed}) {
+# DEBUG!
                         $count += process_line($_, $. + $newlines, $filename, 1);
+						$processed--;
                     }
                 }
 
@@ -1442,12 +1457,14 @@ sub parse_file {
             } ## end of normal pgmode
 
             ## Just a bare entry, so process it right away
+# DEBUG!
             $count += process_line($_, $. + $newlines, $filename);
+			$processed++;
 
         } ## end of each line in the file
 
     } ## end of non-CSV mode
-
+    
     ## Get the new offset and store it
     seek $fh, 0, 1;
     $offset = tell $fh;
@@ -1553,7 +1570,6 @@ sub generate_regexes {
 
 
 sub process_line {
-
     ## We've got a complete statement, so do something with it!
     ## If it matches, we'll either put into %find directly, or store in %similar
 
@@ -1986,7 +2002,7 @@ sub process_report {
 
     ## No files means nothing to do
     if (! @files_parsed) {
-        $arg{quiet} or warn qq{No files were read in, exiting\n};
+        $arg{quiet} or print qq{No files were read in, exiting\n};
         exit 1;
     }
 
@@ -2245,6 +2261,15 @@ sub process_report {
         }
 
         close $efh or warn qq{Could not close $emailfile: $!\n};
+        
+# DEBUG! 
+    open my $fh, '<', $emailfile or die qq{Could not open "$emailfile": $!\n};
+    open my $dh, '>', './debug.log' or die "Could not open debug.log: $!\n";
+    while( <$fh> ) {
+        print $dh "$_ \n";
+    }
+    close $dh;
+    close $fh;
 
         $arg{verbose} and warn "  Sending mail to: $emails\n";
         my $COM = qq{$mailcom '$emails' < $emailfile};
