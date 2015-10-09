@@ -2264,11 +2264,11 @@ sub process_report {
         
 # DEBUG! 
     open my $fh, '<', $emailfile or die qq{Could not open "$emailfile": $!\n};
-    open my $dh, '>', './debug.log' or die "Could not open debug.log: $!\n";
+    open my $debug, '>', './debug.log' or die "Could not open debug.log: $!\n";
     while( <$fh> ) {
-        print $dh "$_ \n";
+        print $debug "$_ \n";
     }
-    close $dh;
+    close $debug;
     close $fh;
 
         $arg{verbose} and warn "  Sending mail to: $emails\n";
