@@ -2737,7 +2737,7 @@ sub final_cleanup {
 
     ## Have we got new lastfiles or offsets?
     for my $t (@{ $opt{file} }) {
-        if ($t->{latest} ne $t->{lastfile}) {
+        if( $t->{latest} && $t->{lastfile} && ($t->{latest} ne $t->{lastfile}) ) {
             $changes++;
             $t->{lastfile} = delete $t->{latest};
         }
