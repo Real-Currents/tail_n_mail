@@ -378,7 +378,7 @@ my $fileinfo = $opt{file}[$filenumber];
 
     ## Generate the next log file to parse
     my $logfile = pick_log_file($fileinfo);
-
+    
     ## If undefined or same as last time, we are done with this file
     if (! defined $logfile or $logfile eq $last_logfile) {
         ## Grab the next extry
@@ -392,7 +392,6 @@ my $fileinfo = $opt{file}[$filenumber];
     $arg{debug} and warn " Parsing file: $logfile\n";
 
     my $count = parse_file($logfile, $fileinfo);
-
     if ($count >= 0) {
         push @files_parsed => [$logfile, $count];
         $fileorder{$logfile} = ++$filenum;
@@ -1136,7 +1135,7 @@ sub parse_file {
 
     ## The file we scanned last time we ran
     my $lastfile = $fileinfo->{lastfile} || '';
-
+    
     ## Set this as the latest (but not the lastfile)
     $fileinfo->{latest} = $filename;
 
@@ -1264,7 +1263,7 @@ sub parse_file {
 
     ## Get exclusion and inclusion regexes for this file
     ($exclude,$include,$exclude_prefix,$exclude_non_parsed) = generate_regexes($filename);
-
+    
     ## Discard the previous line if needed (we rewound by 10 characters above)
     $original_offset and <$fh>;
 
@@ -1366,7 +1365,6 @@ sub parse_file {
 # DEBUG!
                                 $count += process_line(delete $pidline{$pgpid}, 0, $filename);
 								$processed++;
-                                $count += process_line(delete $pidline{$pgpid}, 0, $filename);
                             }
                         }
                         else {
@@ -1466,7 +1464,7 @@ sub parse_file {
         } ## end of each line in the file
 
     } ## end of non-CSV mode
-
+    
     ## Get the new offset and store it
     seek $fh, 0, 1;
     $offset = tell $fh;
@@ -1572,7 +1570,6 @@ sub generate_regexes {
 
 
 sub process_line {
-
     ## We've got a complete statement, so do something with it!
     ## If it matches, we'll either put into %find directly, or store in %similar
 
