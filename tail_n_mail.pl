@@ -1313,13 +1313,16 @@ sub parse_file {
 	  	my $processed = 1;
 		my $prev_line = '';
 		
+# !DEBUG
+
       LOGLINE: while (<$fh>) {
 # DEBUG!
-			if(! $processed ) {
-				$count += process_line($prev_line, $. + $newlines, $filename);
-			}
-			$processed = 0;			
-			$prev_line = $_;
+            if(! $processed ) {
+            $count += process_line($prev_line, $. + $newlines, $filename);
+            }
+            $processed = 0;			
+            $prev_line = $_;
+# !DEBUG
 
             ## We ran into a truncated line last time, so we are most likely done
             last if $bailout;
@@ -1362,9 +1365,10 @@ sub parse_file {
                         if ($arg{pglog} eq 'syslog') {
                             if ($syslognum and $syslognum != $pgnum) {
                                 ## Got a new statement, so process the old
-# DEBUG!
                                 $count += process_line(delete $pidline{$pgpid}, 0, $filename);
-								$processed++;
+# DEBUG!
+				                $processed++;
+# !DEBUG
                             }
                         }
                         else {
@@ -1376,9 +1380,10 @@ sub parse_file {
                             else {
                                 ## Process the old one
                                 ## Delete it so it gets recreated afresh below
-# DEBUG!
                                 $count += process_line(delete $pidline{$pgpid}, 0, $filename);
-								$processed++;
+# DEBUG!
+				$processed++;
+# !DEBUG
                             }
                         }
                     }
@@ -1445,9 +1450,10 @@ sub parse_file {
                     ## Not a continuation, so probably an error from the OS
                     ## Simply parse it right away, force it to match
                     if (! $arg{skip_non_parsed}) {
-# DEBUG!
                         $count += process_line($_, $. + $newlines, $filename, 1);
-						$processed--;
+# DEBUG!
+			$processed--;
+# !DEBUG
                     }
                 }
 
@@ -1457,9 +1463,10 @@ sub parse_file {
             } ## end of normal pgmode
 
             ## Just a bare entry, so process it right away
-# DEBUG!
             $count += process_line($_, $. + $newlines, $filename);
-			$processed++;
+# DEBUG!
+	    $processed++;
+# !DEBUG
 
         } ## end of each line in the file
 
